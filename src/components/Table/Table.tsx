@@ -1,7 +1,8 @@
 import React from 'react';
 import s from './Table.module.css'
 import {OrdersType, selectedElement} from "../../store/orders-reducer";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../store/store";
 
 
 export type TableType = {
@@ -10,13 +11,14 @@ export type TableType = {
 }
 
 export const Table = (props: TableType) => {
+    const selectedOrders = useSelector<AppStateType,OrdersType[]>(state => state.orders.selectedOrders)
     const dispatch = useDispatch<any>()
     const selectOrder = (isSelected: boolean, id:number) =>{
         dispatch(selectedElement(id,isSelected))
     }
 
     return (
-        <div className={s.main}>
+        <div className={selectedOrders.length>0?`${s.main} ${s.popupActive}`:`${s.main} `}>
             <div className={s.table}>
                 <div>
                     <div className={s.check}>Готовится</div>

@@ -5,6 +5,7 @@ import {Restaurant} from "./pages/RestorauntComponent/Restaurant";
 import {useDispatch, useSelector} from "react-redux";
 import {getRestaurants, RestaurantType} from "./store/app-reducer";
 import {AppStateType} from "./store/store";
+import RestaurantCard from "./components/RestaurantCard/RestaurantCard";
 
 
 export const App = () => {
@@ -20,16 +21,12 @@ export const App = () => {
             <Routes>
                 <Route path={'/'} element={<div>
                     {restaurants.map((r) => {
-                        return <div key={r.id}><Link to={r.url}>{r.title}</Link></div>
+                        return <RestaurantCard key={r.id} id={r.id} img={r.img}/>
                     })}
-                    home
                 </div>}/>
 
-                {restaurants.map((r) => {
-                    return (
-                        <Route key={r.id} path={r.url}
-                               element={<Restaurant key={r.id} url={r.url} id={r.id} img={r.img} name={r.title}/>}/>)
-                })}
+
+                <Route path={'/restaurants/:id'} element={<Restaurant/>}/>
             </Routes>
         </div>
     )
