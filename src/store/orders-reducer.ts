@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {ordersAPI} from "../api/api";
+import {RestaurantType} from "./app-reducer";
 
 type ActionsType =
     | ReturnType<typeof getOrders>
@@ -7,6 +8,8 @@ type ActionsType =
     | ReturnType<typeof isReadyCloseModal>
     | ReturnType<typeof setArrayOfOrdersId>
     | ReturnType<typeof resetSelectedOrders>
+    | ReturnType<typeof setSelectedRestaurant>
+
 export type RestaurantsInitStateType = typeof restaurantOrdersInitState
 export type OrdersType = {
     id: number
@@ -20,7 +23,8 @@ export const restaurantOrdersInitState = {
     idOfSelectedElement: 0,
     loader: false,
     isReadyModalOpen: true,
-    selectedOrders: [] as OrdersType[]
+    selectedOrders: [] as OrdersType[],
+    selectedRestaurant: {} as RestaurantType
 }
 
 //REDUCER LOGIC
@@ -40,6 +44,13 @@ export const ordersReducer = (state: RestaurantsInitStateType = restaurantOrders
                 orders: state.orders.map((el)=>({...el,isSelected:false}))
             }
         }
+        case "SET_SELECTED_RESTAURANT":{
+            return {
+                ...state,
+                selectedRestaurant: action.restaurant
+            }
+        }
+
         case "ELEMENT_IS_SELECTED": {
             const isFind = state.orders.find(el => el.id === action.id)
             if (isFind) {
@@ -76,6 +87,9 @@ export const resetSelectedOrders = () => ({
 export const getOrders = (orders: OrdersType[]) => ({
     type: "GET_ORDERS" as const, orders, loader: true
 })
+export const setSelectedRestaurant = (restaurant:RestaurantType)=>(
+    {type:'SET_SELECTED_RESTAURANT' as const,restaurant}
+)
 export const isReadyCloseModal = (isReady: boolean) => ({
     type: "IS_READY_CLOSE_MODAL" as const, isReady
 })
@@ -86,5 +100,6 @@ export const setArrayOfOrdersId = (id: number) => (
 //THUNK CREATORS
 export const getOrdersTC = (id: number) => async (dispatch: Dispatch) => {
     const orders = await ordersAPI.getAllOrders(id)
-    dispatch(getOrders(orders))
+    dispatch(getOrders(orders.orders))
+    dispatch(setSelectedRestaurant({id:orders.id,title:orders.title,url:orders.url,img:orders.img}))
 }

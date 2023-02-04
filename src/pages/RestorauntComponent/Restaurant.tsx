@@ -11,24 +11,21 @@ import ph2 from '../../assets/img/test2.jpg';
 import ph3 from '../../assets/img/test3.jpg';
 import click from '../../assets/img/bell.png'
 import {BottomPopUpWindow} from "../../components/BottomPopUpWindow/BottomPopUpWindow";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {RestaurantType} from "../../store/app-reducer";
 
 
-type RestaurantPropsType = {
-    name: string,
-    img: string
-    id: number
-    url:string
-}
-export const Restaurant = (props: RestaurantPropsType) => {
+
+export const Restaurant = () => {
     localStorage.clear()
+    const params: any = useParams()
     const dispatch = useDispatch<any>()
+    const restaurant = useSelector<AppStateType,RestaurantType>(state => state.orders.selectedRestaurant)
     const orders = useSelector<AppStateType, OrdersType[]>(state => state.orders.orders)
     const idOfSelectedElement = useSelector<AppStateType, number>(state => state.orders.idOfSelectedElement)
     const loader = useSelector<AppStateType, boolean>(state => state.orders.loader)
     const selectedOrders = useSelector<AppStateType,OrdersType[]>(state => state.orders.selectedOrders)
     const navigate = useNavigate()
-    console.log(props.url)
     const img = [
         {id: '1', img: ph1},
         {id: '2', img: ph2},
@@ -41,7 +38,7 @@ export const Restaurant = (props: RestaurantPropsType) => {
     }
 
     useEffect(() => {
-        dispatch(getOrdersTC(props.id))
+        dispatch(getOrdersTC(params.id))
     }, [])
 
     useEffect(() => {
@@ -51,7 +48,7 @@ export const Restaurant = (props: RestaurantPropsType) => {
         }
         if (idOfSelectedElement) {
             interval = setInterval(() => {
-                dispatch(getOrdersTC(props.id))
+                dispatch(getOrdersTC(params.id))
             }, 3000)
         }
         return () => {
@@ -63,7 +60,7 @@ export const Restaurant = (props: RestaurantPropsType) => {
 
     return (
         <div className={s.wrapper}>
-            <Header title={props.name} img={props.img} clickBtn={click}/>
+            <Header title={restaurant.title} img={restaurant.img} clickBtn={click}/>
             <Table orders={orders}
                    loader={loader}/>
             <Advertisement img={img}/>

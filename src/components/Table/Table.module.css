@@ -3,7 +3,17 @@
     display: flex;
     justify-content: center;
     margin-left: 0.5rem;
+    flex-basis: 68%;
+    margin-bottom: 7rem;
+    transition: 300ms all;
 }
+
+.popupActive{
+    margin-bottom: 0;
+    transition: 2ms all;
+
+}
+
 
 @media screen and (max-width: 426px) {
     .main {

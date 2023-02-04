@@ -23,6 +23,6 @@ export const restaurantsAPI = {
 }
 
 export const ordersAPI = {
-    getAllOrders: (id: number) => instance.get<ResponseOrdersType>(`restaurants/${id}/orders`).then(res => res.data.orders)
+    getAllOrders: (id: number) => instance.get<ResponseOrdersType>(`restaurants/${id}/orders`).then(res => res.data)
 }
 
