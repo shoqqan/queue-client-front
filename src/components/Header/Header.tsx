@@ -1,6 +1,4 @@
 import React from 'react';
-import s from "./Header.module.css";
-
 
 type BurgerLogoType = {
     title: string;
@@ -10,11 +8,10 @@ type BurgerLogoType = {
 
 export const Header = (props: BurgerLogoType) => {
     return (
-        <div className={s.main}>
-            <div className={s.logoBell}>
-                <div className={s.flex}>
-                    <img src={props.img} className={s.img}/>
-                </div>
+        <div className={'h-16 flex justify-center items-center w-96 rounded-l-3xl border-b-2 border-error'}>
+            <div className={'h-16 flex justify-between items-center w-80'}>
+                    <img src={props.img} className={'w-12 h-12'}/>
+                    <div className={'basis-2/3'}>{props.title}</div>
             </div>
         </div>
     );
