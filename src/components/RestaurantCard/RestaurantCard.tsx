@@ -5,14 +5,13 @@ type RestaurantCardPropsType = {
     id:number,
     img: string
 }
-const RestaurantCard = (props: RestaurantCardPropsType) => {
+export const RestaurantCard = (props: RestaurantCardPropsType) => {
     const navigate = useNavigate()
 
     return (
         <div onClick={()=>navigate(`/restaurants/${props.id}`)}>
-            <img src={props.img}  style={{width:"50px", height:"50px"}}/>
+            <img src={props.img} className={'w-12 h-12'}/>
         </div>
     );
 };
 
-export default RestaurantCard;

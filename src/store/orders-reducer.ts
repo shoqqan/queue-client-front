@@ -52,13 +52,17 @@ export const ordersReducer = (state: RestaurantsInitStateType = restaurantOrders
         }
 
         case "ELEMENT_IS_SELECTED": {
+
             const isFind = state.orders.find(el => el.id === action.id)
             if (isFind) {
+
                 const isFindOnSelected = state.selectedOrders.find(el => el.id === isFind.id)
                 if (isFindOnSelected) {
+
                     state.selectedOrders=state.selectedOrders.filter((el) => el.id !== isFindOnSelected.id)
                 } else {
                     state.selectedOrders.push(isFind)
+                    console.log(state.selectedOrders)
                 }
             }
             return {
