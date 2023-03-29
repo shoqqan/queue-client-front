@@ -28,7 +28,10 @@ export const ordersAPI = {
 }
 
 export const authAPI = {
-    register: () => instance.post('auth/token').then(res => res.data),
+    register: () => {
+        instance.defaults.headers.common['Authorization'] = ""
+        return  instance.post('auth/token').then(res => res.data)
+    },
     login: (token: string) => {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
         return instance.post('auth/token').then(res => res.data)

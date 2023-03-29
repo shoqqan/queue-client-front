@@ -59,16 +59,17 @@ export const getRestaurants = () => async (dispatch: Dispatch) => {
     // dispatch(setIsLoading(false));
 }
 
-export const authMe = () => async (dispatch: Dispatch) => {
+export const authMe = () => async (dispatch: Dispatch<any>) => {
     try {
         const token = localStorage.getItem('token');
         let data;
-        if (token){
+        if (token) {
             try {
                 data = await authAPI.login(token);
             } catch (e) {
                 localStorage.removeItem('token');
                 dispatch(setAccessToken(''));
+                data = await authAPI.register();
             }
         } else {
             data = await authAPI.register();
