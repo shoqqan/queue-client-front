@@ -1,10 +1,10 @@
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
-import {ordersReducer} from "./orders-reducer";
+import {restaurantReducer} from "./restaurant-reducer";
 import {appReducer} from "./app-reducer";
 import thunk from 'redux-thunk';
 
 export const rootReducer = combineReducers({
-    orders: ordersReducer,
+    restaurant: restaurantReducer,
     app: appReducer
 })
 

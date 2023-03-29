@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {RestaurantType} from "../store/app-reducer";
-import {OrdersType} from "../store/orders-reducer";
+import {OrdersType} from "../store/restaurant-reducer";
 
 type ResponseOrdersType = {
     id: number
@@ -11,11 +11,9 @@ type ResponseOrdersType = {
 }
 
 const instance = axios.create({
-    baseURL: 'https://queue.up.railway.app/api/',
+    baseURL: 'https://queue-back-development.up.railway.app/',
     headers: {
-        withCredentials: true,
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Header": "Origin, X-Requested-With, Content-Type, Accept"
+        "Content-Type": "application/json",
     }
 })
 export const restaurantsAPI = {
@@ -23,6 +21,16 @@ export const restaurantsAPI = {
 }
 
 export const ordersAPI = {
-    getAllOrders: (id: number) => instance.get<ResponseOrdersType>(`restaurants/${id}/orders`).then(res => res.data)
+    getAllOrders: (id: string, token: string) => {
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        return  instance.get<ResponseOrdersType>(`restaurants/${id}/orders`).then(res => res.data)
+    }
 }
 
+export const authAPI = {
+    register: () => instance.post('auth/token').then(res => res.data),
+    login: (token: string) => {
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        return instance.post('auth/token').then(res => res.data)
+    }
+}
