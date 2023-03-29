@@ -19,7 +19,11 @@ export const OrdersRequestingPage = () => {
     const readyOrders = orders.filter(order => order.is_ready && selectedOrders?.includes(order.id))
 
     useEffect(() => {
-        if (Number.isNaN(Number(restaurantId)) || !Array.isArray(selectedOrders) || selectedOrders.some(Number.isNaN)) {
+        if (
+            Number.isNaN(Number(restaurantId))
+            || !Array.isArray(selectedOrders)
+            || selectedOrders.some(Number.isNaN)
+        ) {
             navigate('/')
         } else {
             dispatch(authMe())
@@ -40,12 +44,18 @@ export const OrdersRequestingPage = () => {
         }
     }, [accessToken])
 
+    useEffect(() => {
+        if (orders.length && (onGoingOrders.length === 0 && readyOrders.length === 0)) {
+            navigate('/')
+        }
+    }, [orders])
+
     return (
         <div
             className={'h-full flex flex-col gap-4 overflow-y-auto justify-between box-border'}>
             <Header title={title} img={img}/>
-            <Table orders={onGoingOrders} title={'Готовятся'} variant={'primary'}/>
-            { readyOrders.length > 0 && <Table orders={readyOrders} title={'Готово'} variant={'secondary'}/>}
+            {onGoingOrders.length > 0 && <Table orders={onGoingOrders} title={'Готовятся'} variant={'primary'}/>}
+            {readyOrders.length > 0 && <Table orders={readyOrders} title={'Готово'} variant={'secondary'}/>}
             <Advertisement/>
             <div className="h-[30px]"/>
         </div>

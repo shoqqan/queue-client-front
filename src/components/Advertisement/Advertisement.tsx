@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
+import {BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
 
 export const Advertisement = () => {
     const slides = [
@@ -15,6 +15,7 @@ export const Advertisement = () => {
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [id, setId] = useState(0);
 
     const prevSlide = () => {
         const isFirstSlide = currentIndex === 0;
@@ -31,10 +32,20 @@ export const Advertisement = () => {
     const goToSlide = (slideIndex:number) => {
         setCurrentIndex(slideIndex);
     };
+
     useEffect(()=>{
-        setInterval(()=>{
+        if (id) {
+            clearInterval(id)
+        }
+        const intervalId = setInterval(()=>{
           nextSlide()
-        },5000)
+        },3000)
+
+        setId(intervalId)
+
+        return () => {
+            clearInterval(intervalId)
+        }
     },[currentIndex])
 
     return (
