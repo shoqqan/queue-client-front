@@ -1,0 +1,13 @@
+{
+  "RESTAURANT_PAGE": {
+    "CHOOSE_ORDERS": "Choose your order",
+    "TOASTER": {
+      "ORDERS_SELECTED": "Orders selected:",
+      "CONFIRM": "Confirm"
+    }
+  },
+  "ORDERS_PAGE": {
+    "NOT_READY": "Getting ready",
+    "READY": "Done"
+  }
+}

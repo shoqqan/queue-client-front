@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {authMe} from "../../store/app-reducer";
+import {authMe, setIsLoading} from "../../store/app-reducer";
 import {AppStateType} from "../../store/store";
 import {getOrdersTC, RestaurantType} from "../../store/restaurant-reducer";
 import {Header} from "../../components/Header/Header";
@@ -9,6 +9,7 @@ import {Table} from "../../components/Table/Table";
 import {Advertisement} from "../../components/Advertisement/Advertisement";
 import ReactDOM from "react-dom";
 import {BottomPopUpWindow} from "../../components/BottomPopUpWindow/BottomPopUpWindow";
+import {useTranslation} from "react-i18next";
 
 
 export const Restaurant = () => {
@@ -18,7 +19,7 @@ export const Restaurant = () => {
     const accessToken = useSelector<AppStateType, string>((state) => state.app.accessToken)
     const {title, img, orders} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
     const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
-
+    const {t} = useTranslation()
     const gettingReadyOrders = orders.filter(order => !order.is_ready)
         .map(order => ({
             ...order,
@@ -37,7 +38,6 @@ export const Restaurant = () => {
     const onConfirmHandler = () => {
         navigate('orders/' + selectedOrders.join(','))
     }
-
     useEffect(() => {
         if (Number.isNaN(Number(restaurantId))) {
             navigate('/')
@@ -49,8 +49,7 @@ export const Restaurant = () => {
     let intervalId = 0;
     useEffect(() => {
         if (accessToken && restaurantId) {
-            dispatch(getOrdersTC(restaurantId))
-
+            dispatch(getOrdersTC(restaurantId,true))
             intervalId = setInterval(() => {
                 dispatch(getOrdersTC(restaurantId))
             }, 3000)
@@ -67,13 +66,14 @@ export const Restaurant = () => {
         }
     }, [orders])
 
+
     return (
         <div
             className={'h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-hidden'}>
             <Header title={title} img={img}/>
             <Table
                 orders={gettingReadyOrders}
-                title={'Выберите свой заказ'}
+                title={t('RESTAURANT_PAGE.CHOOSE_ORDERS')}
                 variant={'primary'}
                 onItemClicked={onItemClicked}
             />
@@ -82,10 +82,10 @@ export const Restaurant = () => {
             {
                 selectedOrders.length > 0 &&
                 ReactDOM.createPortal(<BottomPopUpWindow isOpened={selectedOrders.length > 0}>
-                    <div>Выбрано заказов: {selectedOrders.length}</div>
+                    <div>{`${t('RESTAURANT_PAGE.TOASTER.ORDERS_SELECTED')} ${selectedOrders.length}`}</div>
                     <button
                         className={'m-1 text-white pl-1 pr-1 text-xl bg-orange-600 flex justify-center items-center rounded-lg border-none shadow-sm font-semibold'}
-                        onClick={onConfirmHandler}>Подтвердить
+                        onClick={onConfirmHandler}>{t('RESTAURANT_PAGE.TOASTER.CONFIRM')}
                     </button>
                 </BottomPopUpWindow>, document.getElementById('portal')!)
             }

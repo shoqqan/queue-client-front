@@ -1,0 +1,13 @@
+{
+  "RESTAURANT_PAGE": {
+    "CHOOSE_ORDERS": "Тапсырысыңызды таңдаңыз",
+    "TOASTER": {
+      "ORDERS_SELECTED": "Таңдалған тапсырыстар:",
+      "CONFIRM": "Құптау"
+    }
+  },
+  "ORDERS_PAGE": {
+    "NOT_READY": "Жасалуда",
+    "READY": "Дайын"
+  }
+}

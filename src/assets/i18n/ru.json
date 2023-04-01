@@ -1,0 +1,13 @@
+{
+  "RESTAURANT_PAGE": {
+    "CHOOSE_ORDERS": "Выберите свой заказ",
+    "TOASTER": {
+      "ORDERS_SELECTED": "Выбрано заказов:",
+      "CONFIRM": "Подтвердить"
+    }
+  },
+  "ORDERS_PAGE": {
+    "NOT_READY": "Готовятся",
+    "READY": "Готово"
+  }
+}

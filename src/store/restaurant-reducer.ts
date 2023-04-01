@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {ordersAPI} from "../api/api";
 import {AppStateType} from "./store";
+import {setIsLoading} from "./app-reducer";
 
 type ActionsType = ReturnType<typeof setRestaurant>
 
@@ -50,11 +51,19 @@ export const setRestaurant = (value: RestaurantType) => ({
 })
 
 //THUNK CREATORS
-export const getOrdersTC = (id: string) => async (dispatch: Dispatch, getState: () => AppStateType) => {
+export const getOrdersTC = (id: string,isLoadingNeeded:boolean=true) => async (dispatch: Dispatch, getState: () => AppStateType) => {
     try {
+        if(isLoadingNeeded){
+            dispatch(setIsLoading(true))
+        }
         const accessToken = getState().app.accessToken
         const restaurant = await ordersAPI.getAllOrders(id, accessToken)
         dispatch(setRestaurant(restaurant))
     } catch (e) {
+    }
+    finally {
+        if(isLoadingNeeded){
+            dispatch(setIsLoading(true))
+        }
     }
 }

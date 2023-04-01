@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {authAPI, restaurantsAPI} from "../api/api";
+import {authAPI} from "../api/api";
 
 //TYPES
 export type RestaurantType = {
@@ -11,6 +11,8 @@ export type RestaurantType = {
 type ActionsType =
     | ReturnType<typeof setRestaurants>
     | ReturnType<typeof setAccessToken>
+    | ReturnType<typeof setIsLoading>
+
 
 type InitStateType = typeof initState;
 
@@ -33,6 +35,11 @@ export const appReducer = (state: InitStateType = initState, action: ActionsType
                 accessToken: action.accessToken
             }
         }
+        case 'SET_ISLOADING':{
+            return {
+                ...state,isLoading: action.value
+            }
+        }
         default: {
             return state
         }
@@ -48,19 +55,13 @@ export const setRestaurants = (restaurants: RestaurantType[]) => ({
 })
 
 export const setIsLoading = (value: boolean) => ({
-    type: "SET_RESTAURANTS" as const, value
+    type: "SET_ISLOADING" as const, value
 })
 
 //THUNK CREATORS
-export const getRestaurants = () => async (dispatch: Dispatch) => {
-    // dispatch(setIsLoading(true));
-    const restaurants = await restaurantsAPI.getAll();
-    dispatch(setRestaurants(restaurants))
-    // dispatch(setIsLoading(false));
-}
-
 export const authMe = () => async (dispatch: Dispatch<any>) => {
     try {
+        dispatch(setIsLoading(true))
         const token = localStorage.getItem('token');
         let data;
         if (token) {
@@ -71,6 +72,8 @@ export const authMe = () => async (dispatch: Dispatch<any>) => {
                 dispatch(setAccessToken(''));
                 data = await authAPI.register();
             }
+            finally {
+            }
         } else {
             data = await authAPI.register();
         }
@@ -79,4 +82,8 @@ export const authMe = () => async (dispatch: Dispatch<any>) => {
     } catch (e) {
 
     }
+    finally {
+        dispatch(setIsLoading(false))
+    }
 }
+

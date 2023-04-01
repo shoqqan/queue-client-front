@@ -10,6 +10,8 @@ type ResponseOrdersType = {
     orders: OrdersType[]
 }
 
+// const baseURL = 'https://queue-back-development.up.railway.app/'
+
 const instance = axios.create({
     baseURL: 'https://queue-back-development.up.railway.app/',
     headers: {

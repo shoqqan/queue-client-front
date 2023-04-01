@@ -7,6 +7,7 @@ import {getOrdersTC, RestaurantType} from "../store/restaurant-reducer";
 import {Header} from "../components/Header/Header";
 import {authMe} from "../store/app-reducer";
 import {useNavigate, useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 export const OrdersRequestingPage = () => {
     const {restaurantId, orderIds} = useParams();
@@ -17,7 +18,7 @@ export const OrdersRequestingPage = () => {
     const accessToken = useSelector<AppStateType, string>(state => state.app.accessToken)
     const onGoingOrders = orders.filter(order => !order.is_ready && selectedOrders?.includes(order.id))
     const readyOrders = orders.filter(order => order.is_ready && selectedOrders?.includes(order.id))
-
+    const {t} = useTranslation()
     useEffect(() => {
         if (
             Number.isNaN(Number(restaurantId))
@@ -54,8 +55,8 @@ export const OrdersRequestingPage = () => {
         <div
             className={'h-full flex flex-col gap-4 overflow-y-auto justify-between box-border'}>
             <Header title={title} img={img}/>
-            {onGoingOrders.length > 0 && <Table orders={onGoingOrders} title={'Готовятся'} variant={'primary'}/>}
-            {readyOrders.length > 0 && <Table orders={readyOrders} title={'Готово'} variant={'secondary'}/>}
+            {onGoingOrders.length > 0 && <Table orders={onGoingOrders} title={t('ORDERS_PAGE.NOT_READY')} variant={'primary'}/>}
+            {readyOrders.length > 0 && <Table orders={readyOrders} title={t('ORDERS_PAGE.READY')} variant={'secondary'}/>}
             <Advertisement/>
             <div className="h-[30px]"/>
         </div>
