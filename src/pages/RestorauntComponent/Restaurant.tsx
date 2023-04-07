@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {authMe, setIsLoading} from "../../store/app-reducer";
+import {authMe} from "../../store/app-reducer";
 import {AppStateType} from "../../store/store";
 import {getOrdersTC, RestaurantType} from "../../store/restaurant-reducer";
 import {Header} from "../../components/Header/Header";
@@ -17,7 +17,7 @@ export const Restaurant = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<any>()
     const accessToken = useSelector<AppStateType, string>((state) => state.app.accessToken)
-    const {title, img, orders} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
+    const {title, logo, orders, adds} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
     const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
     const {t} = useTranslation()
     const gettingReadyOrders = orders.filter(order => !order.is_ready)
@@ -70,14 +70,14 @@ export const Restaurant = () => {
     return (
         <div
             className={'h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-hidden'}>
-            <Header title={title} img={img}/>
+            <Header title={title} img={logo}/>
             <Table
                 orders={gettingReadyOrders}
                 title={t('RESTAURANT_PAGE.CHOOSE_ORDERS')}
                 variant={'primary'}
                 onItemClicked={onItemClicked}
             />
-            <Advertisement/>
+            <Advertisement adds={adds}/>
             <div className="h-[30px]"/>
             {
                 selectedOrders.length > 0 &&

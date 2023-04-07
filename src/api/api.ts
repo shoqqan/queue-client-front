@@ -4,10 +4,11 @@ import {OrdersType} from "../store/restaurant-reducer";
 
 type ResponseOrdersType = {
     id: number
-    img: string
+    logo: string
     title: string
     url: string
     orders: OrdersType[]
+    adds: string[]
 }
 
 // const baseURL = 'https://queue-back-development.up.railway.app/'

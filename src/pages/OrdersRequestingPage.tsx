@@ -13,7 +13,7 @@ export const OrdersRequestingPage = () => {
     const {restaurantId, orderIds} = useParams();
     const dispatch = useDispatch<any>()
     const navigate = useNavigate();
-    const {title, img, orders} = useSelector<AppStateType, RestaurantType>(state => state.restaurant)
+    const {title, logo, orders, adds} = useSelector<AppStateType, RestaurantType>(state => state.restaurant)
     const selectedOrders = orderIds?.split(',').map(id => +id)
     const accessToken = useSelector<AppStateType, string>(state => state.app.accessToken)
     const onGoingOrders = orders.filter(order => !order.is_ready && selectedOrders?.includes(order.id))
@@ -54,10 +54,10 @@ export const OrdersRequestingPage = () => {
     return (
         <div
             className={'h-full flex flex-col gap-4 overflow-y-auto justify-between box-border'}>
-            <Header title={title} img={img}/>
+            <Header title={title} img={logo}/>
             {onGoingOrders.length > 0 && <Table orders={onGoingOrders} title={t('ORDERS_PAGE.NOT_READY')} variant={'primary'}/>}
             {readyOrders.length > 0 && <Table orders={readyOrders} title={t('ORDERS_PAGE.READY')} variant={'secondary'}/>}
-            <Advertisement/>
+            <Advertisement adds={adds}/>
             <div className="h-[30px]"/>
         </div>
     );

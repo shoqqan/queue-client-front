@@ -17,17 +17,19 @@ export type OrdersType = {
 export type RestaurantType = {
     id: number
     title: string
-    img: string
+    logo: string
     url: string
     orders: OrdersType[]
+    adds: string[]
 }
 
 export const restaurantOrdersInitState = {
     orders: [] as OrdersType[],
     title: "",
-    img: "",
+    logo: "",
     id: 0,
     url: "",
+    adds: [] as string[]
 }
 
 //REDUCER LOGIC
@@ -51,7 +53,7 @@ export const setRestaurant = (value: RestaurantType) => ({
 })
 
 //THUNK CREATORS
-export const getOrdersTC = (id: string,isLoadingNeeded:boolean=true) => async (dispatch: Dispatch, getState: () => AppStateType) => {
+export const getOrdersTC = (id: string,isLoadingNeeded:boolean=false) => async (dispatch: Dispatch, getState: () => AppStateType) => {
     try {
         if(isLoadingNeeded){
             dispatch(setIsLoading(true))
@@ -63,7 +65,7 @@ export const getOrdersTC = (id: string,isLoadingNeeded:boolean=true) => async (d
     }
     finally {
         if(isLoadingNeeded){
-            dispatch(setIsLoading(true))
+            dispatch(setIsLoading(false))
         }
     }
 }

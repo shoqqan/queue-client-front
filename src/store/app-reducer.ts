@@ -35,7 +35,7 @@ export const appReducer = (state: InitStateType = initState, action: ActionsType
                 accessToken: action.accessToken
             }
         }
-        case 'SET_ISLOADING':{
+        case 'SET_IS_LOADING':{
             return {
                 ...state,isLoading: action.value
             }
@@ -55,7 +55,7 @@ export const setRestaurants = (restaurants: RestaurantType[]) => ({
 })
 
 export const setIsLoading = (value: boolean) => ({
-    type: "SET_ISLOADING" as const, value
+    type: "SET_IS_LOADING" as const, value
 })
 
 //THUNK CREATORS

@@ -3,31 +3,24 @@ import {BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
 import {useSelector} from "react-redux";
 import {AppStateType} from "../../store/store";
 
-export const Advertisement = () => {
+type AdvertisementPropsType = {
+    adds: string[]
+}
+
+export const Advertisement: React.FC<AdvertisementPropsType> = React.memo(({adds = []}) => {
     const loader = useSelector<AppStateType,boolean>(state => state.app.isLoading)
-    const slides = [
-        {
-            url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80',
-        },
-        {
-            url: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
-        },
-        {
-            url: 'https://images.unsplash.com/photo-1661961112951-f2bfd1f253ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80',
-        }
-    ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [id, setId] = useState(0);
 
     const prevSlide = () => {
         const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+        const newIndex = isFirstSlide ? adds.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
     };
 
     const nextSlide = () => {
-        const isLastSlide = currentIndex === slides.length - 1;
+        const isLastSlide = currentIndex === adds.length - 1;
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
     };
@@ -50,11 +43,12 @@ export const Advertisement = () => {
             clearInterval(intervalId)
         }
     },[currentIndex])
+
     return (
         <div className='lg:w-full relative group'>
-            {loader && <AdvertismentSkeleton/>}
+            {loader && <AdvertisementSkeleton/>}
             {!loader && <div
-                style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+                style={{ backgroundImage: `url(${adds[currentIndex]})` }}
                 className='w-full h-56 rounded-2xl bg-center bg-cover duration-500'
             ></div>}
             <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
@@ -64,7 +58,7 @@ export const Advertisement = () => {
                 <BsChevronCompactRight onClick={nextSlide} size={30} />
             </div>
             <div className='flex top-4 justify-center py-2'>
-                {slides.map((slide, slideIndex) => (
+                {adds.map((slide, slideIndex) => (
                     <div
                         key={slideIndex}
                         onClick={() => goToSlide(slideIndex)}
@@ -75,9 +69,9 @@ export const Advertisement = () => {
             </div>
         </div>
     );
-};
+});
 
-const AdvertismentSkeleton = () =>{
+const AdvertisementSkeleton = () =>{
     return(
         <div className={'w-full h-56 rounded-2xl bg-center bg-white duration-500 dark:bg-slate-300 animate-pulse'}></div>
     )
