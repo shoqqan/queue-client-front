@@ -1,9 +1,10 @@
 import {Dispatch} from "redux";
-import {ordersAPI} from "../api/api";
+import {ordersAPI, restaurantsAPI} from "../api/api";
 import {AppStateType} from "./store";
 import {setIsLoading} from "./app-reducer";
 
-type ActionsType = ReturnType<typeof setRestaurant>
+type ActionsType = ReturnType<typeof setRestaurant> | ReturnType<typeof setOrders>
+
 
 export type RestaurantsInitStateType = typeof restaurantOrdersInitState
 export type OrdersType = {
@@ -41,6 +42,11 @@ export const restaurantReducer = (state: RestaurantType = restaurantOrdersInitSt
                 ...action.value
             }
         }
+        case "SET_ORDERS": {
+            return {
+                ...state, orders: action.value
+            }
+        }
         default:
             return state
     }
@@ -51,21 +57,30 @@ export const setRestaurant = (value: RestaurantType) => ({
     type: "SET_RESTAURANT_DETAILS" as const,
     value
 })
+export const setOrders = (value: OrdersType[]) => ({
+    type: "SET_ORDERS" as const,
+    value
+})
 
 //THUNK CREATORS
-export const getOrdersTC = (id: string,isLoadingNeeded:boolean=false) => async (dispatch: Dispatch, getState: () => AppStateType) => {
+export const getRestaurantTC = (id: string) => async (dispatch: Dispatch, getState: () => AppStateType) => {
     try {
-        if(isLoadingNeeded){
-            dispatch(setIsLoading(true))
-        }
+        dispatch(setIsLoading(true))
         const accessToken = getState().app.accessToken
-        const restaurant = await ordersAPI.getAllOrders(id, accessToken)
+        const restaurant = await restaurantsAPI.getRestaurant(id, accessToken)
         dispatch(setRestaurant(restaurant))
     } catch (e) {
+    } finally {
+        dispatch(setIsLoading(false))
     }
-    finally {
-        if(isLoadingNeeded){
-            dispatch(setIsLoading(false))
-        }
+}
+
+export const getOrdersTC = (id: string) => async (dispatch: Dispatch, getState: () => AppStateType) => {
+    try {
+        const accessToken = getState().app.accessToken
+        const res = await ordersAPI.getOrders(id, accessToken)
+        dispatch(setOrders(res.orders))
+    } catch (e) {
+    } finally {
     }
 }

@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../store/store";
 import {Table} from "../components/Table/Table";
 import {Advertisement} from "../components/Advertisement/Advertisement";
-import {getOrdersTC, RestaurantType} from "../store/restaurant-reducer";
+import {getOrdersTC, getRestaurantTC, RestaurantType} from "../store/restaurant-reducer";
 import {Header} from "../components/Header/Header";
 import {authMe} from "../store/app-reducer";
 import {useNavigate, useParams} from "react-router-dom";
@@ -34,7 +34,7 @@ export const OrdersRequestingPage = () => {
     let intervalId = 0;
     useEffect(() => {
         if (accessToken && restaurantId) {
-            dispatch(getOrdersTC(restaurantId))
+            dispatch(getRestaurantTC(restaurantId))
 
             intervalId = setInterval(() => {
                 dispatch(getOrdersTC(restaurantId))

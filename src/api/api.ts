@@ -2,13 +2,17 @@ import axios from 'axios'
 import {RestaurantType} from "../store/app-reducer";
 import {OrdersType} from "../store/restaurant-reducer";
 
-type ResponseOrdersType = {
+type ResponseRestaurantType = {
     id: number
     logo: string
     title: string
     url: string
     orders: OrdersType[]
     adds: string[]
+}
+
+type ResponseOrdersType = {
+    orders:OrdersType[]
 }
 
 // const baseURL = 'https://queue-back-development.up.railway.app/'
@@ -20,11 +24,15 @@ const instance = axios.create({
     }
 })
 export const restaurantsAPI = {
-    getAll: () => instance.get<RestaurantType[]>('restaurants').then(res => res.data)
+    getAll: () => instance.get<RestaurantType[]>('restaurants').then(res => res.data),
+    getRestaurant: (id: string, token: string) => {
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        return  instance.get<ResponseRestaurantType>(`restaurants/${id}`).then(res => res.data)
+    }
 }
 
 export const ordersAPI = {
-    getAllOrders: (id: string, token: string) => {
+    getOrders: (id:string,token:string) =>{
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
         return  instance.get<ResponseOrdersType>(`restaurants/${id}/orders`).then(res => res.data)
     }
