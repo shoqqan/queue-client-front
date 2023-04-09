@@ -6,10 +6,10 @@ import {AppStateType} from "../../store/store";
 import {getOrdersTC, getRestaurantTC, RestaurantType} from "../../store/restaurant-reducer";
 import {Header} from "../../components/Header/Header";
 import {Table} from "../../components/Table/Table";
-import {Advertisement} from "../../components/Advertisement/Advertisement";
 import ReactDOM from "react-dom";
 import {BottomPopUpWindow} from "../../components/BottomPopUpWindow/BottomPopUpWindow";
 import {useTranslation} from "react-i18next";
+import {ReactSlider} from "../../components/Advertisement/ReactSlider";
 
 
 export const Restaurant = () => {
@@ -17,6 +17,7 @@ export const Restaurant = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<any>()
     const accessToken = useSelector<AppStateType, string>((state) => state.app.accessToken)
+    const isLoading = useSelector<AppStateType, boolean>((state) => state.app.isLoading)
     const {title, logo, orders, adds} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
     const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
     const {t} = useTranslation()
@@ -69,7 +70,7 @@ export const Restaurant = () => {
 
     return (
         <div
-            className={'h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-hidden'}>
+            className={'w-mobile h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-hidden'}>
             <Header title={title} img={logo}/>
             <Table
                 orders={gettingReadyOrders}
@@ -77,7 +78,7 @@ export const Restaurant = () => {
                 variant={'primary'}
                 onItemClicked={onItemClicked}
             />
-            <Advertisement adds={adds}/>
+            <ReactSlider img={adds} isLoading={isLoading}/>
             <div className="h-[30px]"/>
             {
                 selectedOrders.length > 0 &&

@@ -11,11 +11,10 @@ export const Language: React.FC = () => {
     ];
 
     const onClick = (code: string) => {
-        if (i18n.language === code) {
-            setIsShow(!isShow)
-        } else {
+        if (i18n.language !== code) {
             i18n.changeLanguage(code);
         }
+        setIsShow(!isShow)
     }
 
     useEffect(() => {
@@ -53,7 +52,7 @@ export const Language: React.FC = () => {
                                 <span
                                     key={index}
                                     className={`language  w-[82px] h-[45px] font-bold text-lg leading-6 text-black flex items-center justify-center cursor-pointer`}
-                                    onClick={() => i18n.changeLanguage(language.code)}
+                                    onClick={() => onClick(language.code)}
                                 >
                                     {language.name}
                                 </span>
