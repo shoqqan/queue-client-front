@@ -57,8 +57,15 @@ export const OrdersRequestingPage = () => {
         <div
             className={'w-mobile h-full flex flex-col gap-4 overflow-y-auto justify-between box-border'}>
             <Header title={title} img={logo}/>
-            {onGoingOrders.length > 0 && <Table orders={onGoingOrders} title={t('ORDERS_PAGE.NOT_READY')} variant={'primary'}/>}
-            {readyOrders.length > 0 && <Table orders={readyOrders} title={t('ORDERS_PAGE.READY')} variant={'secondary'}/>}
+            <button className={"rounded-lg bg-gray-200 text-black disabled:opacity-40 min-w-[50px] px-3 py-1"} onClick={() => {
+                navigate(`/restaurants/${restaurantId}`)
+            }
+            }>Смотреть все заказы
+            </button>
+            {onGoingOrders.length > 0 &&
+                <Table orders={onGoingOrders} title={t('ORDERS_PAGE.NOT_READY')} variant={'primary'}/>}
+            {readyOrders.length > 0 &&
+                <Table orders={readyOrders} title={t('ORDERS_PAGE.READY')} variant={'secondary'}/>}
             {(isLoading && orders.length === 0) && <TableSkeleton/>}
             <ReactSlider img={adds} isLoading={isLoading}/>
             <div className="h-[30px]"/>

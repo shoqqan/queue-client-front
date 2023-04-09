@@ -70,7 +70,7 @@ export const Restaurant = () => {
 
     return (
         <div
-            className={'w-mobile h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-hidden'}>
+            className={'w-mobile h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-y-auto'}>
             <Header title={title} img={logo}/>
             <Table
                 orders={gettingReadyOrders}
@@ -85,7 +85,7 @@ export const Restaurant = () => {
                 ReactDOM.createPortal(<BottomPopUpWindow isOpened={selectedOrders.length > 0}>
                     <div>{`${t('RESTAURANT_PAGE.TOASTER.ORDERS_SELECTED')} ${selectedOrders.length}`}</div>
                     <button
-                        className={'m-1 text-white pl-1 pr-1 text-xl bg-orange-600 flex justify-center items-center rounded-lg border-none shadow-sm font-semibold'}
+                        className={'m-1 text-white py-1 text-xl bg-orange-600 flex justify-center items-center rounded-lg border-none shadow-sm font-semibold'}
                         onClick={onConfirmHandler}>{t('RESTAURANT_PAGE.TOASTER.CONFIRM')}
                     </button>
                 </BottomPopUpWindow>, document.getElementById('portal')!)

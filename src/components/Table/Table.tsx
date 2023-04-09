@@ -53,7 +53,7 @@ export const Table: React.FC<TableProps> = ({orders, title, variant, onItemClick
 };
 
 export const TableSkeleton = () => {
-    const skeletonClass = 'h-20 w-[80px] shadow-[0_2px_5px_0_rgba(0,0,0,0.4)] m-3 rounded-2xl border-2 loading'
+    const skeletonClass = 'h-20 w-[80px] m-3 rounded-2xl border-2 loading'
     return (
         <div className={"w-mobile flex justify-center items-center flex-col p-1"}>
             <div className={"w-full h-[44px] rounded-[20px_20px_0_0] loading"}/>

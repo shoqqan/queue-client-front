@@ -16,9 +16,10 @@ type ResponseOrdersType = {
 }
 
 // const baseURL = 'https://queue-back-development.up.railway.app/'
+const prod = 'https://queue.up.railway.app'
 
 const instance = axios.create({
-    baseURL: 'https://queue-back-development.up.railway.app/',
+    baseURL:  prod,
     headers: {
         "Content-Type": "application/json",
     }

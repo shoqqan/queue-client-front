@@ -5,7 +5,7 @@
 
 @layer components {
     .loading {
-        @apply dark:bg-slate-500 animate-pulse
+        @apply shadow-[0_0px_1px_0_rgba(0,0,0,0.4)] bg-gray-300
     }
     .w-mobile {
         @apply w-[342px]
