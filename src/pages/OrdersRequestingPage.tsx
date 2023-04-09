@@ -33,7 +33,7 @@ export const OrdersRequestingPage = () => {
         }
     }, [])
 
-    let intervalId = 0;
+    let intervalId: string | number | NodeJS.Timer | undefined;
     useEffect(() => {
         if (accessToken && restaurantId) {
             dispatch(getRestaurantTC(restaurantId))
