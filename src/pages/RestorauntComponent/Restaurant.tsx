@@ -9,7 +9,6 @@ import {Table} from "../../components/Table/Table";
 import ReactDOM from "react-dom";
 import {BottomPopUpWindow} from "../../components/BottomPopUpWindow/BottomPopUpWindow";
 import {useTranslation} from "react-i18next";
-import {ReactSlider} from "../../components/Advertisement/ReactSlider";
 
 
 export const Restaurant = () => {
@@ -17,8 +16,7 @@ export const Restaurant = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<any>()
     const accessToken = useSelector<AppStateType, string>((state) => state.app.accessToken)
-    const isLoading = useSelector<AppStateType, boolean>((state) => state.app.isLoading)
-    const {title, logo, orders, adds} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
+    const {title, logo, orders} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
     const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
     const {t} = useTranslation()
     const gettingReadyOrders = orders.filter(order => !order.is_ready)
@@ -26,6 +24,8 @@ export const Restaurant = () => {
             ...order,
             isSelected: selectedOrders.includes(order.id)
         }))
+    const readyOrders = orders.filter(order => order.is_ready)
+
 
     const onItemClicked = (id: number) => {
         const index = selectedOrders.indexOf(id);
@@ -37,7 +37,11 @@ export const Restaurant = () => {
     }
 
     const onConfirmHandler = () => {
-        navigate('orders/' + selectedOrders.join(','))
+        //TODO: Need translate to local language
+        const message = `Хочу следить за этими заказами: ${selectedOrders.join(', ')}
+        Текст нельзя менять, иначе бот не сможет распознать заказы`
+        window.location.href = 'https://wa.me/77071013735?text=' + message
+        setSelectedOrders([]);
     }
     useEffect(() => {
         if (Number.isNaN(Number(restaurantId))) {
@@ -47,7 +51,7 @@ export const Restaurant = () => {
         }
     }, [])
 
-    let intervalId: string | number | NodeJS.Timer | undefined;
+    let intervalId: any;
     useEffect(() => {
         if (accessToken && restaurantId) {
             dispatch(getRestaurantTC(restaurantId))
@@ -70,7 +74,7 @@ export const Restaurant = () => {
 
     return (
         <div
-            className={'w-mobile h-full rounded-3xl flex flex-col justify-between gap-4 relative overflow-y-auto'}>
+            className={'w-mobile h-full rounded-3xl flex flex-col gap-4 relative overflow-y-auto'}>
             <Header title={title} img={logo}/>
             <Table
                 orders={gettingReadyOrders}
@@ -78,19 +82,29 @@ export const Restaurant = () => {
                 variant={'primary'}
                 onItemClicked={onItemClicked}
             />
-            <ReactSlider img={adds} isLoading={isLoading}/>
-            <div className="h-[30px]"/>
             {
-                selectedOrders.length > 0 &&
-                ReactDOM.createPortal(<BottomPopUpWindow isOpened={selectedOrders.length > 0}>
-                    <div>{`${t('RESTAURANT_PAGE.TOASTER.ORDERS_SELECTED')} ${selectedOrders.length}`}</div>
-                    <button
-                        className={'m-1 text-white py-1 text-xl bg-orange-600 flex justify-center items-center rounded-lg border-none shadow-sm font-semibold'}
-                        onClick={onConfirmHandler}>{t('RESTAURANT_PAGE.TOASTER.CONFIRM')}
-                    </button>
-                </BottomPopUpWindow>, document.getElementById('portal')!)
+                readyOrders.length > 0 && <Table
+                    orders={readyOrders}
+                    title={t('ORDERS_PAGE.READY')}
+                    variant={'secondary'}
+                />
+            }
+
+            {
+                selectedOrders.length > 0 && <SelectedOrdersPopUp selected={selectedOrders.length} onConfirm={onConfirmHandler} />
+
             }
         </div>
     );
 };
 
+const SelectedOrdersPopUp: React.FC<{selected: number, onConfirm: () => void}> = ({selected, onConfirm}) => {
+    const {t} = useTranslation()
+    return ReactDOM.createPortal(<BottomPopUpWindow isOpened={selected > 0}>
+        <div>{`${t('RESTAURANT_PAGE.TOASTER.ORDERS_SELECTED')} ${selected}`}</div>
+        <button
+            className={'m-1 text-white py-1 text-xl bg-orange-600 flex justify-center items-center rounded-lg border-none shadow-sm font-semibold'}
+            onClick={onConfirm}>{t('RESTAURANT_PAGE.TOASTER.CONFIRM')}
+        </button>
+    </BottomPopUpWindow>, document.getElementById('portal')!)
+}

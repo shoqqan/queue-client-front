@@ -11,7 +11,7 @@ export const Advertisement: React.FC<AdvertisementPropsType> = React.memo(({adds
     const loader = useSelector<AppStateType, boolean>(state => state.app.isLoading)
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [id, setId] = useState<string | number | NodeJS.Timer | undefined>(0);
+    const [id, setId] = useState<any>(0);
 
     const prevSlide = () => {
         const isFirstSlide = currentIndex === 0;
