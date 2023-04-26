@@ -6,6 +6,9 @@
       "CONFIRM": "Құптау"
     }
   },
+  "TABLE": {
+    "NOT_ORDERS_YET": "Әзірге тапсырыс жоқ..."
+  },
   "ORDERS_PAGE": {
     "NOT_READY": "Жасалуда",
     "READY": "Дайын"

@@ -6,6 +6,9 @@
       "CONFIRM": "Confirm"
     }
   },
+  "TABLE": {
+    "NOT_ORDERS_YET": "There are no orders yet..."
+  },
   "ORDERS_PAGE": {
     "NOT_READY": "Getting ready",
     "READY": "Done"

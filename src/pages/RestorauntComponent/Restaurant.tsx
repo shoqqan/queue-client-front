@@ -82,23 +82,21 @@ export const Restaurant = () => {
                 variant={'primary'}
                 onItemClicked={onItemClicked}
             />
+            <Table
+                orders={readyOrders}
+                title={t('ORDERS_PAGE.READY')}
+                variant={'secondary'}
+            />
             {
-                readyOrders.length > 0 && <Table
-                    orders={readyOrders}
-                    title={t('ORDERS_PAGE.READY')}
-                    variant={'secondary'}
-                />
-            }
-
-            {
-                selectedOrders.length > 0 && <SelectedOrdersPopUp selected={selectedOrders.length} onConfirm={onConfirmHandler} />
+                selectedOrders.length > 0 &&
+                <SelectedOrdersPopUp selected={selectedOrders.length} onConfirm={onConfirmHandler}/>
 
             }
         </div>
     );
 };
 
-const SelectedOrdersPopUp: React.FC<{selected: number, onConfirm: () => void}> = ({selected, onConfirm}) => {
+const SelectedOrdersPopUp: React.FC<{ selected: number, onConfirm: () => void }> = ({selected, onConfirm}) => {
     const {t} = useTranslation()
     return ReactDOM.createPortal(<BottomPopUpWindow isOpened={selected > 0}>
         <div>{`${t('RESTAURANT_PAGE.TOASTER.ORDERS_SELECTED')} ${selected}`}</div>

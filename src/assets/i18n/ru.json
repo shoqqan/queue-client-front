@@ -6,6 +6,9 @@
       "CONFIRM": "Подтвердить"
     }
   },
+  "TABLE": {
+    "NOT_ORDERS_YET": "Заказов пока нет..."
+  },
   "ORDERS_PAGE": {
     "NOT_READY": "Готовятся",
     "READY": "Готово"
