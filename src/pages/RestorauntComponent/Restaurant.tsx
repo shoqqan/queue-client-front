@@ -1,21 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router-dom";
-import {authMe} from "../../store/app-reducer";
+import {useNavigate} from "react-router-dom";
 import {AppStateType} from "../../store/store";
-import {getOrdersTC, getRestaurantTC, RestaurantType} from "../../store/restaurant-reducer";
+import { RestaurantType} from "../../store/restaurant-reducer";
 import {Header} from "../../components/Header/Header";
 import {Table} from "../../components/Table/Table";
 import ReactDOM from "react-dom";
 import {BottomPopUpWindow} from "../../components/BottomPopUpWindow/BottomPopUpWindow";
 import {useTranslation} from "react-i18next";
+import {setIsLoading} from "../../store/app-reducer";
 
 
 export const Restaurant = () => {
-    const {restaurantId} = useParams()
     const navigate = useNavigate();
     const dispatch = useDispatch<any>()
-    const accessToken = useSelector<AppStateType, string>((state) => state.app.accessToken)
     const {title, logo, orders} = useSelector<AppStateType, RestaurantType>((state: AppStateType) => state.restaurant)
     const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
     const {t} = useTranslation()
@@ -37,32 +35,14 @@ export const Restaurant = () => {
     }
 
     const onConfirmHandler = () => {
-        //TODO: Need translate to local language
-        const message = `Хочу следить за этими заказами: ${selectedOrders.join(', ')}
-        Текст нельзя менять, иначе бот не сможет распознать заказы`
-        window.location.href = 'https://wa.me/77071013735?text=' + message
+        // const message = `Хочу следить за этими заказами: ${selectedOrders.join(', ')}
+        // Текст нельзя менять, иначе бот не сможет распознать заказы`
+        // window.location.href = 'https://wa.me/77071013735?text=' + message
+        navigate(`request/${selectedOrders}`)
         setSelectedOrders([]);
-    }
-    useEffect(() => {
-        if (Number.isNaN(Number(restaurantId))) {
-            navigate('/')
-        } else {
-            dispatch(authMe())
-        }
-    }, [])
 
-    let intervalId: any;
-    useEffect(() => {
-        if (accessToken && restaurantId) {
-            dispatch(getRestaurantTC(restaurantId))
-            intervalId = setInterval(() => {
-                dispatch(getOrdersTC(restaurantId))
-            }, 3000)
-        }
-        return () => {
-            clearInterval(intervalId)
-        }
-    }, [accessToken])
+    }
+
 
     useEffect(() => {
         if (orders.length) {
@@ -70,6 +50,11 @@ export const Restaurant = () => {
             setSelectedOrders(selectedOrders.filter(id => gettingReadyOrdersId.includes(id)))
         }
     }, [orders])
+    useEffect(()=>{
+        setTimeout(()=>{
+            dispatch(setIsLoading(false))
+        },2000)
+    },[])
 
 
     return (
@@ -87,6 +72,7 @@ export const Restaurant = () => {
                 title={t('ORDERS_PAGE.READY')}
                 variant={'secondary'}
             />
+
             {
                 selectedOrders.length > 0 &&
                 <SelectedOrdersPopUp selected={selectedOrders.length} onConfirm={onConfirmHandler}/>

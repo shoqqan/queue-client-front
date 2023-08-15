@@ -12,5 +12,8 @@
   "ORDERS_PAGE": {
     "NOT_READY": "Жасалуда",
     "READY": "Дайын"
+  },
+  "ORDERS_REQUESTING": {
+    "GO_BACK": "Барлық тапсырыстарды қараңыз"
   }
 }

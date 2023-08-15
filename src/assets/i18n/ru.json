@@ -12,5 +12,8 @@
   "ORDERS_PAGE": {
     "NOT_READY": "Готовятся",
     "READY": "Готово"
+  },
+  "ORDERS_REQUESTING": {
+    "GO_BACK": "Смотреть все заказы"
   }
 }

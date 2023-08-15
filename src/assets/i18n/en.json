@@ -12,5 +12,8 @@
   "ORDERS_PAGE": {
     "NOT_READY": "Getting ready",
     "READY": "Done"
+  },
+  "ORDERS_REQUESTING": {
+    "GO_BACK": "Check all orders"
   }
 }
